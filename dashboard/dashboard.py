@@ -5,7 +5,7 @@ import plotly.express as px
 import shap
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, precision_score, recall_score, f1_score
-import os # Importar a biblioteca 'os' para manipular caminhos de arquivo
+import os
 
 # ==============================================================================
 # CONFIGURAÇÃO DA PÁGINA
@@ -16,7 +16,9 @@ st.set_page_config(
     layout="wide"
 )
 
-# ==================== INÍCIO DA CORREÇÃO DE CAMINHOS ====================
+# ==============================================================================
+# CAMINHOS E FUNÇÕES DE CARREGAMENTO (com cache para performance)
+# ==============================================================================
 # Define o caminho base como o diretório onde o script está localizado
 BASE_PATH = os.path.dirname(__file__)
 
@@ -26,33 +28,27 @@ DATA_PATH = os.path.join(BASE_PATH, 'dataset_dashboard.csv')
 X_TEST_PATH = os.path.join(BASE_PATH, 'X_test.pkl')
 Y_TEST_PATH = os.path.join(BASE_PATH, 'y_test.pkl')
 SHAP_VALUES_PATH = os.path.join(BASE_PATH, 'shap_values.pkl')
-# ==================== FIM DA CORREÇÃO DE CAMINHOS ====================
 
-
-# ==============================================================================
-# FUNÇÕES PARA CARREGAR OS ARTEFATOS (com cache para performance)
-# ==============================================================================
 @st.cache_resource
 def load_model():
-    return joblib.load(MODEL_PATH) # Usa o caminho completo
+    return joblib.load(MODEL_PATH)
 
 @st.cache_data
 def load_data():
-    return pd.read_csv(DATA_PATH) # Usa o caminho completo
+    return pd.read_csv(DATA_PATH)
 
 @st.cache_data
 def load_test_data():
-    X_test = joblib.load(X_TEST_PATH) # Usa o caminho completo
-    y_test = joblib.load(Y_TEST_PATH) # Usa o caminho completo
+    X_test = joblib.load(X_TEST_PATH)
+    y_test = joblib.load(Y_TEST_PATH)
     return X_test, y_test
 
 @st.cache_resource
 def load_shap_values():
-    return joblib.load(SHAP_VALUES_PATH) # Usa o caminho completo
+    return joblib.load(SHAP_VALUES_PATH)
 
 @st.cache_data
 def get_fx_min_max(_shap_values):
-    """Calcula os valores mínimo e máximo de f(x) no conjunto de teste."""
     fx_values = _shap_values.base_values + _shap_values.values.sum(axis=1)
     return fx_values.min(), fx_values.max()
 
@@ -71,7 +67,6 @@ except FileNotFoundError as e:
 # ==============================================================================
 # BARRA LATERAL (SIDEBAR)
 # ==============================================================================
-# st.sidebar.image("https://i.imgur.com/g030b0G.png", width=150) # Removido para evitar erro de imagem
 st.sidebar.title("Navegação")
 st.sidebar.markdown("Use o menu abaixo para explorar as diferentes análises.")
 
@@ -90,51 +85,22 @@ if depto_selecionado != 'Todos':
 else:
     df_filtrado = df.copy()
 
-# O restante do código permanece igual, pois o problema era apenas no carregamento dos arquivos.
-# As seções de cada página (Visão Geral, Análise do Modelo, etc.) não precisam de alteração.
 
 # ==============================================================================
-# PÁGINA 1: VISÃO GERAL E KPIS
+# LÓGICA DE EXIBIÇÃO DAS PÁGINAS (CADA IF/ELIF TEM SEU PRÓPRIO TÍTULO)
 # ==============================================================================
+
 if pagina_selecionada == "Visão Geral e KPIs":
     st.title("📊 Visão Geral do Attrition")
     st.markdown(f"Analisando o departamento: **{depto_selecionado}**")
-    # ... (código da página 1)
-
-# ==============================================================================
-# PÁGINA 2: ANÁLISE DO MODELO PREDITIVO
-# ==============================================================================
-elif pagina_selecionada == "Análise do Modelo Preditivo":
-    st.title("🔍 Análise do Modelo Preditivo (XGBoost Otimizado)")
-    # ... (código da página 2)
-
-# ==============================================================================
-# PÁGINA 3: ANÁLISE DE CENÁRIOS (THRESHOLD)
-# ==============================================================================
-elif pagina_selecionada == "Análise de Cenários (Threshold)":
-    st.title("⚙️ Simulador de Threshold de Decisão")
-    # ... (código da página 3)
-
-# ==============================================================================
-# PÁGINA 4: ANÁLISE DE RISCO INDIVIDUAL
-# ==============================================================================
-elif pagina_selecionada == "Análise de Risco Individual":
-    st.title("👤 Análise de Risco Individual")
-    # ... (código da página 4)
-
-# Cole aqui o restante do código do seu dashboard.py das seções que omiti com "#..."
-# para manter a resposta mais curta. O código das páginas em si não muda.
-
-# Exemplo completo para a Página 1, para que você possa se basear:
-if pagina_selecionada == "Visão Geral e KPIs":
-    st.title("📊 Visão Geral do Attrition")
-    st.markdown(f"Analisando o departamento: **{depto_selecionado}**")
+    
     col1, col2, col3 = st.columns(3)
     total_attrition = df_filtrado[df_filtrado['Attrition'] == 'Yes'].shape[0]
     taxa_attrition = (total_attrition / df_filtrado.shape[0]) * 100 if df_filtrado.shape[0] > 0 else 0
     col1.metric("Total de Funcionários", df_filtrado.shape[0])
     col2.metric("Total de Casos de Attrition", total_attrition)
     col3.metric("Taxa de Attrition (%)", f"{taxa_attrition:.2f}%")
+    
     st.header("Distribuição de Attrition")
     if not df_filtrado.empty:
         col_graf1, col_graf2 = st.columns(2)
@@ -144,20 +110,25 @@ if pagina_selecionada == "Visão Geral e KPIs":
         with col_graf2:
             fig_marital = px.pie(df_filtrado[df_filtrado['Attrition']=='Yes'], names='MaritalStatus', title="Perfil de Attrition por Estado Civil")
             st.plotly_chart(fig_marital, use_container_width=True)
+            
     st.header("Dados Detalhados")
     st.dataframe(df_filtrado)
+
 elif pagina_selecionada == "Análise do Modelo Preditivo":
     st.title("🔍 Análise do Modelo Preditivo (XGBoost Otimizado)")
+    
     st.header("Importância das Features (Feature Importance)")
     st.markdown("Quais variáveis o modelo considera mais importantes para prever o turnover?")
     feature_importance = pd.DataFrame({'feature': X_test.columns, 'importance': modelo.feature_importances_}).sort_values('importance', ascending=False)
     fig_importance = px.bar(feature_importance.head(15), x='importance', y='feature', orientation='h', title="Top 15 Features Mais Importantes")
     st.plotly_chart(fig_importance, use_container_width=True)
+    
     st.header("Interpretabilidade com SHAP")
     st.markdown("Como cada variável impacta a decisão do modelo? O gráfico abaixo mostra o impacto médio de cada feature.")
     fig, ax = plt.subplots()
     shap.summary_plot(shap_values, X_test, plot_type="bar", show=False)
     st.pyplot(fig)
+    
     st.header("Matriz de Confusão")
     st.markdown("Como o modelo performou no conjunto de teste? A matriz mostra os acertos e erros.")
     y_pred = modelo.predict(X_test)
@@ -166,55 +137,79 @@ elif pagina_selecionada == "Análise do Modelo Preditivo":
     fig, ax = plt.subplots(figsize=(6, 4))
     disp.plot(ax=ax, cmap='Blues', values_format='d')
     st.pyplot(fig)
+
 elif pagina_selecionada == "Análise de Cenários (Threshold)":
     st.title("⚙️ Simulador de Threshold de Decisão")
     st.markdown("O modelo gera uma probabilidade de saída para cada funcionário. O 'threshold' é o ponto de corte (padrão 0.5) para classificar alguém como 'alto risco'. Ajuste o threshold para ver o impacto no número de funcionários sinalizados e na performance do modelo.")
+    
     y_probs = modelo.predict_proba(X_test)[:, 1]
-    threshold = st.slider("Selecione o Threshold de Risco", min_value=0.0, max_value=1.0, value=0.5, step=0.01)
+    
+    threshold = st.slider(
+        "Selecione o Threshold de Risco",
+        min_value=0.0,
+        max_value=1.0,
+        value=0.5,
+        step=0.01
+    )
+    
     y_pred_custom = (y_probs >= threshold).astype(int)
+    
     st.header(f"Resultados com Threshold de {threshold:.2f}")
+    
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("Funcionários Sinalizados", f"{sum(y_pred_custom)}")
     col2.metric("Recall", f"{recall_score(y_test, y_pred_custom):.2f}")
     col3.metric("Precision", f"{precision_score(y_test, y_pred_custom, zero_division=0):.2f}")
     col4.metric("F1-Score", f"{f1_score(y_test, y_pred_custom, zero_division=0):.2f}")
+    
     st.markdown("---")
     st.markdown("**Recall:** Dos funcionários que **realmente saíram**, qual porcentagem o modelo conseguiu capturar?")
     st.markdown("**Precision:** Dos funcionários que o modelo **sinalizou como risco**, qual porcentagem realmente saiu?")
+
 elif pagina_selecionada == "Análise de Risco Individual":
     st.title("👤 Análise de Risco Individual")
     st.markdown("Selecione um funcionário (pelo seu ID) para ver a previsão do modelo e a explicação detalhada do porquê dessa previsão.")
+    
     employee_numbers_disponiveis = df.loc[X_test.index, 'EmployeeNumber']
-    id_selecionado = st.selectbox("Selecione o EmployeeNumber do Funcionário", options=employee_numbers_disponiveis.values)
+    
+    id_selecionado = st.selectbox(
+        "Selecione o EmployeeNumber do Funcionário",
+        options=employee_numbers_disponiveis.values
+    )
+    
     if id_selecionado is not None:
         idx_selecionado = employee_numbers_disponiveis[employee_numbers_disponiveis == id_selecionado].index[0]
+        
         st.header(f"Analisando Funcionário (ID: {id_selecionado})")
+        
         probabilidade = modelo.predict_proba(X_test.loc[[idx_selecionado]])[0, 1]
+        
         st.metric("Probabilidade de Saída", f"{probabilidade:.2%}")
+        
         st.markdown("---")
         st.subheader("Explicação da Previsão (SHAP Waterfall Plot)")
         st.markdown("O gráfico abaixo mostra como cada característica do funcionário contribuiu para a pontuação final de risco.")
+        
         shap_index = X_test.index.get_loc(idx_selecionado)
+        
         shap_explanation_individual = shap.Explanation(
             values=shap_values.values[shap_index],
             base_values=shap_values.base_values[shap_index],
             data=X_test.loc[idx_selecionado],
             feature_names=X_test.columns.tolist()
         )
+        
         fig, ax = plt.subplots(figsize=(10, 6))
         shap.plots.waterfall(shap_explanation_individual, max_display=15, show=False)
         plt.tight_layout()
         st.pyplot(fig)
+        
         with st.expander("Como interpretar este gráfico?"):
             st.markdown(f"""
             Este gráfico de cascata (Waterfall Plot) mostra como a previsão de risco é construída passo a passo:
 
-            - **E[f(x)] (Valor Base):** É o risco médio de saída para todos os funcionários. A barra cinza na parte inferior representa esse valor.
-            
-            - **Barras Vermelhas:** Representam as características deste funcionário que **aumentam** o risco de saída. Elas "empurram" o valor para cima.
-            
-            - **Barras Azuis:** Representam as características que **diminuem** o risco (fatores de proteção). Elas "empurram" o valor para baixo.
-            
-            - **f(x) (Valor Final):** É a pontuação final de risco para este funcionário. Para referência, no nosso conjunto de teste, as pontuações variaram de **{fx_min:.2f}** (risco mais baixo) a **{fx_max:.2f}** (risco mais alto).
+            - **E[f(x)] (Valor Base):** É o risco médio de saída para todos os funcionários.
+            - **Barras Vermelhas:** Representam as características que **aumentam** o risco de saída.
+            - **Barras Azuis:** Representam as características que **diminuem** o risco (fatores de proteção).
+            - **f(x) (Valor Final):** É a pontuação final de risco. Para referência, as pontuações no nosso teste variaram de **{fx_min:.2f}** (risco mais baixo) a **{fx_max:.2f}** (risco mais alto).
             """)
-            
