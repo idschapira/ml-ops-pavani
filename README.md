@@ -8,7 +8,7 @@ Este projeto foi desenvolvido como trabalho final para a disciplina **Data Scien
 
 ---
 
-## 🚀 Acesse o Dashboard Interativo
+## Acesse o Dashboard Interativo
 
 A aplicação final, com todas as análises, simulações e previsões, está publicada e pode ser acessada publicamente no link abaixo:
 
