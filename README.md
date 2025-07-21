@@ -33,10 +33,11 @@ O dashboard interativo, construído com Streamlit, é o principal entregável do
 
 ## 3. Estrutura do Repositório
 
-├── analise/                # Contém os notebooks Jupyter com a análise exploratória e a modelagem.
+```├── analise/                # Contém os notebooks Jupyter com a análise exploratória e a modelagem.
 ├── dashboard/              # Contém a aplicação Streamlit (dashboard.py) e todos os artefatos necessários (.pkl, .csv).
 ├── .gitignore              # Arquivo para ignorar arquivos e pastas desnecessários (ex: venv).
-└── README.md               # Este arquivo de documentação.
+└── README.md               # Este arquivo de documentação.```
+
 
 ## 4. Metodologia
 
