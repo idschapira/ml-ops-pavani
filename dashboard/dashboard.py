@@ -39,5 +39,5 @@ else:
 st.info("Se os seus arquivos .pkl ou .csv aparecem com um tamanho muito pequeno (ex: 133 bytes), isso confirma o problema com Git LFS.")
 st.info("Se os arquivos não aparecem na pasta 'dashboard', eles não foram enviados corretamente para o GitHub.")
 
-# Interrompe a execução do resto do dashboard para focar na depuração
+# Interrompe a execução do resto doa dashboard para focar na depuração
 st.stop()
