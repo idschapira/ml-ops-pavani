@@ -1,99 +1,88 @@
-# TRABALHO DE CONCLUSÃO DE DISCIPLINA
+# HR Analytics Challenge: Previsão de Attrition para a TechCorp Brasil
 
-## [cite_start]Machine Learning Aplicado: HR Analytics Challenge [cite: 2]
+![Status](https://img.shields.io/badge/status-concluído-green)
+![Python](https://img.shields.io/badge/Python-3.13-blue.svg)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.35-red.svg)
 
-[cite_start]**Disciplina**: Data Science Experience [cite: 3]
-[cite_start]**Professor**: Matheus H. P. Pacheco [cite: 4]
-[cite_start]**Data de Entrega**: 17/07/2025 [cite: 5]
-[cite_start]**Valor**: 10 pontos [cite: 6]
+Este projeto foi desenvolvido como trabalho final para a disciplina **Data Science Experience** da Universidade Presbiteriana Mackenzie.
 
-## [cite_start]CONTEXTO DO PROBLEMA [cite: 7]
+---
 
-[cite_start]A TechCorp Brasil, uma das maiores empresas de tecnologia do país com mais de 50.000 funcionários, está enfrentando um problema crítico: sua taxa de *attrition* (rotatividade de funcionários) aumentou 35% no último ano, gerando custos estimados em R$ 45 milhões. [cite: 8]
+## 🚀 Acesse o Dashboard Interativo
 
-[cite_start]Cada funcionário que deixa a empresa representa não apenas custos de demissão e contratação (estimados em 1,5x o salário anual), mas também: [cite: 9]
-* [cite_start]Perda de conhecimento institucional [cite: 9]
-* [cite_start]Impacto na produtividade das equipes [cite: 9]
-* [cite_start]Diminuição da moral dos colaboradores [cite: 9]
-* [cite_start]Atrasos em projetos críticos [cite: 9]
+A aplicação final, com todas as análises, simulações e previsões, está publicada e pode ser acessada publicamente no link abaixo:
 
-[cite_start]Você foi contratado como Cientista de Dados para desenvolver um sistema preditivo que identifique funcionários com alto risco de deixar a empresa, permitindo que o RH tome ações preventivas. [cite: 10]
+**Clique aqui para acessar o dashboard https://ml-ops-pavani-dash.streamlit.app/**
 
-## [cite_start]OBJETIVO DO TRABALHO [cite: 11]
+---
 
-[cite_start]Desenvolver um pipeline completo de Machine Learning para prever *attrition* de funcionários, demonstrando domínio das técnicas aprendidas na disciplina e criatividade na solução do problema. [cite: 12]
+## 1. Descrição do Projeto
 
-### [cite_start]Entregáveis Obrigatórios: [cite: 13]
-1.  [cite_start]Código Python completo e documentado (Jupyter Notebook ou scripts .py) [cite: 14]
-2.  [cite_start]Relatório técnico (10-15 páginas) detalhando toda a solução [cite: 15]
-3.  [cite_start]Dashboard interativo ou visualizações que comuniquem os resultados [cite: 16]
+A TechCorp Brasil, uma empresa de tecnologia com mais de 50.000 funcionários, enfrenta um aumento de 35% em sua taxa de rotatividade (*attrition*), gerando custos estimados em R$ 45 milhões anuais. Este projeto aborda o desafio de desenvolver uma solução de Machine Learning de ponta a ponta para prever o risco de saída de colaboradores, permitindo que o departamento de RH implemente ações de retenção proativas e data-driven.
 
-## [cite_start]SOBRE O DATASET [cite: 18]
+A solução utiliza um modelo preditivo treinado com dados históricos da empresa para identificar os principais fatores que levam ao turnover e para gerar uma pontuação de risco individual para cada funcionário.
 
-[cite_start]O dataset fornecido contém informações de 1 milhão de funcionários (sintético baseado no IBM HR Analytics) com 35 variáveis: [cite: 19]
+## 2. Funcionalidades do Dashboard
 
-### [cite_start]Variáveis Disponíveis: [cite: 20]
-* [cite_start]**Demográficas**: Age, Gender, MaritalStatus, Education, EducationField [cite: 21]
-* [cite_start]**Profissionais**: Department, JobRole, JobLevel, JobInvolvement, Years At Company [cite: 21]
-* [cite_start]**Compensação**: MonthlyIncome, Percent Salary Hike, StockOptionLevel [cite: 22]
-* [cite_start]**Satisfação**: JobSatisfaction, Environment Satisfaction, RelationshipSatisfaction [cite: 23]
-* [cite_start]**Work-Life**: OverTime, WorkLifeBalance, Business Travel, DistanceFrom Home [cite: 24]
-* [cite_start]**Performance**: Performance Rating, Training TimesLast Year [cite: 25]
-* [cite_start]**Target**: Attrition (Yes/No) [cite: 26]
+O dashboard interativo, construído com Streamlit, é o principal entregável do projeto e centraliza os resultados da análise, oferecendo as seguintes funcionalidades:
 
-[cite_start]**IMPORTANTE**: O dataset é altamente desbalanceado (~16% attrition) [cite: 27]
+* **Visão Geral e KPIs:** Apresenta indicadores chave, como a taxa de attrition geral e por departamento, além de gráficos interativos sobre o perfil dos funcionários que deixaram a empresa.
+* **Análise do Modelo Preditivo:** Oferece transparência sobre a lógica do modelo, exibindo as features mais importantes e um gráfico de interpretabilidade (SHAP) que explica o impacto médio de cada variável.
+* **Análise de Cenários (Threshold):** Permite que o usuário de negócio ajuste o limiar de decisão do modelo e veja em tempo real o impacto na quantidade de funcionários sinalizados e nas métricas de performance (Recall vs. Precision).
+* **Análise de Risco Individual:** Possibilita a seleção de um funcionário específico para visualizar sua probabilidade de saída e um gráfico de cascata (SHAP Waterfall Plot) que detalha os fatores exatos que contribuíram para sua pontuação de risco.
 
-## [cite_start]CRITÉRIOS DE AVALIAÇÃO [cite: 28]
+## 3. Estrutura do Repositório
 
-### [cite_start]1. Análise Exploratória (2 pontos) [cite: 29]
-* [cite_start]Análise estatística completa das variáveis [cite: 30]
-* [cite_start]Identificação de padrões e correlações [cite: 31]
-* [cite_start]Visualizações criativas e informativas [cite: 32]
-* [cite_start]Insights de negócio relevantes [cite: 33]
-* [cite_start]Tratamento de dados faltantes/outliers [cite: 35]
+├── analise/                # Contém os notebooks Jupyter com a análise exploratória e a modelagem.
+├── dashboard/              # Contém a aplicação Streamlit (dashboard.py) e todos os artefatos necessários (.pkl, .csv).
+├── .gitignore              # Arquivo para ignorar arquivos e pastas desnecessários (ex: venv).
+└── README.md               # Este arquivo de documentação.
 
-### [cite_start]2. Feature Engineering (2 pontos) [cite: 36]
-* [cite_start]Criação de no mínimo 10 novas features [cite: 37]
-* [cite_start]Justificativa técnica e de negócio para cada feature [cite: 39]
-* [cite_start]Análise do impacto das novas features [cite: 41]
-* [cite_start]Uso de técnicas avançadas (polynomial features, embeddings, etc.) [cite: 43]
+## 4. Metodologia
 
-### [cite_start]3. Modelagem (2 pontos) [cite: 44]
-* [cite_start]Implementação de pelo menos 4 algoritmos diferentes [cite: 45]
-* [cite_start]Tratamento adequado do desbalanceamento [cite: 46]
-* [cite_start]Otimização de hiperparâmetros (Grid/Random Search, Bayesian, etc.) [cite: 47]
-* [cite_start]Validação cruzada apropriada [cite: 48]
-* [cite_start]Análise de ensemble methods [cite: 49]
+O projeto seguiu um pipeline completo de Data Science:
 
-### [cite_start]4. Avaliação e Interpretação (2 pontos) [cite: 51]
-* [cite_start]Métricas apropriadas para desbalanceamento [cite: 52]
-* [cite_start]Análise de erro detalhada [cite: 53]
-* [cite_start]Análise de viés e fairness [cite: 54]
-* [cite_start]Recomendações de threshold ótimo [cite: 55]
+1.  **Análise Exploratória de Dados (EDA):** Investigação dos dados para identificar os principais drivers do attrition, como horas extras, cargo e estado civil.
+2.  **Engenharia de Features:** Criação de 10 novas variáveis avançadas para capturar relações complexas, utilizando técnicas como **Target Encoding** e **transformações polinomiais**.
+3.  **Modelagem Preditiva:** Treinamento e avaliação de 5 algoritmos de classificação, com tratamento de dados desbalanceados (usando **SMOTE**) e otimização de hiperparâmetros (com **GridSearchCV**). O modelo **XGBoost Otimizado** foi selecionado como o campeão.
+4.  **Avaliação e Interpretabilidade:** Análise profunda do modelo final com **Matriz de Confusão**, análise de **Viés e Fairness**, e interpretabilidade com **SHAP** para entender as decisões do modelo.
 
-### [cite_start]5. Implementação e Comunicação (2 pontos) [cite: 56]
-* [cite_start]Código limpo e bem documentado [cite: 57]
-* [cite_start]Pipeline reproduzível [cite: 58, 61]
-* [cite_start]Visualizações profissionais [cite: 59, 62]
-* [cite_start]Comunicação clara dos resultados [cite: 60, 63]
-* [cite_start]Proposta de implementação em produção [cite: 64]
+## 5. Tecnologias Utilizadas
 
-## [cite_start]DESAFIOS EXTRAS (Pontos Bônus) [cite: 65]
+* **Linguagem:** Python 3.13
+* **Análise de Dados:** Pandas, NumPy
+* **Visualização:** Matplotlib, Seaborn, Plotly
+* **Machine Learning:** Scikit-learn, XGBoost, CatBoost
+* **Interpretabilidade:** SHAP
+* **Dashboard:** Streamlit
+* **Versionamento:** Git & GitHub
 
-### [cite_start]Desafio: Deployment (3 pontos) [cite: 66]
-[cite_start]Crie uma API REST ou aplicação web que permita: [cite: 67]
-* [cite_start]Upload de dados de novos funcionários [cite: 67]
-* [cite_start]Predição em tempo real [cite: 67]
-* [cite_start]Dashboard de monitoramento [cite: 67]
-* [cite_start]Sistema de alertas [cite: 67]
+## 6. Como Executar o Projeto Localmente
 
-## [cite_start]DICAS E RECURSOS [cite: 68]
+Para executar o dashboard no seu computador, siga os passos abaixo:
 
-### [cite_start]Bibliotecas Recomendadas: [cite: 69]
+1.  **Clone o repositório:**
+    ```bash
+    git clone [https://github.com/rchavarria3007/ml-ops-pavani.git](https://github.com/rchavarria3007/ml-ops-pavani.git)
+    cd ml-ops-pavani/dashboard
+    ```
+2.  **Crie e ative um ambiente virtual:**
+    ```bash
+    python -m venv venv
+    .\venv\Scripts\activate
+    ```
+3.  **Instale as dependências:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+4.  **Execute a aplicação Streamlit:**
+    ```bash
+    streamlit run dashboard.py
+    ```
 
-[cite_start]**Essenciais** [cite: 70]
-```python
-[cite_start]import pandas as pd [cite: 71]
-[cite_start]import numpy as np [cite: 72]
-[cite_start]import matplotlib.pyplot as plt [cite: 73]
-[cite_start]import seaborn as sns [cite: 74]
+## 7. Autores
+
+* Giovanna Protti (10747135)
+* Ilan Schapira (10746127)
+* Raul Chavarria (10742687)
+* Santina Cortinove (10742029)
